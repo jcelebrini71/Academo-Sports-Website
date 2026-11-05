@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Academo Sports – Sportstipendium USA</title>
+<meta name="description" content="Academo Sports begleitet Athleten aus Deutschland, Österreich und der Schweiz auf dem Weg zu einem Sportstipendium an US-Colleges.">
+<link rel="icon" href="brand_assets/academo_sports_mark_only_500.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow+Semi+Condensed:wght@500;600&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Brand palette (Academo Sports Brand Guidelines) */
+    --aubergine: #41193B;
+    --aubergine-600: #5A2451;
+    --plum-ink: #2A1024;
+    --mauve: #8A5E80;
+    --mauve-tint: #E7D7E2;
+    --cream: #FDF3E8;
+    --gold: #C0892E;
+    --bg: #000;
+
+    /* Spacing tokens */
+    --s-1: 0.5rem;   /* 8  */
+    --s-2: 0.625rem; /* 10 */
+    --s-3: 1rem;     /* 16 */
+    --s-4: 1.25rem;  /* 20 */
+    --s-5: 1.5rem;   /* 24 */
+    --s-6: 2.5rem;   /* 40 */
+    --s-7: 4rem;     /* 64 */
+
+    --spring: cubic-bezier(.34, 1.56, .64, 1);
+    --ease-out: cubic-bezier(.22, 1, .36, 1);
+    --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+    --font-semi: "Barlow Semi Condensed", "Barlow", sans-serif;
+    --font-body: "Barlow", system-ui, sans-serif;
+  }
+
+  html { background: var(--bg); overscroll-behavior: none; }
+  body {
+    margin: 0; background: var(--bg); color: var(--cream);
+    font-family: var(--font-body); font-size: 1rem; line-height: 1.7;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
+  }
+  ::-webkit-scrollbar { display: none; }
+  * { box-sizing: border-box; }
+  :focus-visible { outline: 2px solid var(--mauve-tint); outline-offset: 3px; }
+
+  /* Logo recolored to exact cream via mask (keeps the official artwork) */
+  .logo {
+    display: block; background: var(--cream);
+    -webkit-mask: url("brand_assets/background%20removed%20aubergine.png") center / contain no-repeat;
+            mask: url("brand_assets/background%20removed%20aubergine.png") center / contain no-repeat;
+  }
+  .mark {
+    -webkit-mask: url("brand_assets/academo_sports_mark_only_500.png") center / contain no-repeat;
+            mask: url("brand_assets/academo_sports_mark_only_500.png") center / contain no-repeat;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--s-3) var(--s-5);
+    transition: transform .5s var(--ease-out);
+  }
+  .topbar::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,.85), rgba(0,0,0,0));
+    transition: opacity .4s var(--ease-out);
+  }
+  .topbar.scrolled::before { opacity: 1; }
+  .topbar .logo { width: 116px; height: 40px; }
+  @media (min-width: 768px) { .topbar .logo { width: 140px; height: 48px; } }
+  .logo-link { border-radius: 4px; transition: opacity .25s var(--ease-out), transform .3s var(--spring); }
+  .logo-link:hover { opacity: .8; }
+  .logo-link:active { transform: scale(.97); }
+
+  .nav-link {
+    font-family: var(--font-semi); font-weight: 600; font-size: .9375rem; letter-spacing: .02em;
+    color: var(--cream); text-decoration: none; border-radius: 4px; padding: .25rem .25rem; opacity: .85;
+    transition: opacity .2s var(--ease-out);
+  }
+  .nav-link:hover { opacity: 1; }
+  .nav-link:active { opacity: .6; }
+
+  .btn-cta {
+    font-family: var(--font-semi); font-weight: 600; font-size: .9375rem; letter-spacing: .02em;
+    color: var(--plum-ink); background: var(--cream);
+    padding: .45rem .9rem; border-radius: 6px; text-decoration: none;
+    box-shadow: 0 1px 0 rgba(255,255,255,.5) inset, 0 6px 20px -6px rgba(138,94,128,.55), 0 2px 6px -2px rgba(42,16,36,.6);
+    transition: transform .35s var(--spring), opacity .2s;
+    display: inline-block;
+  }
+  .btn-cta:hover { transform: translateY(-2px); }
+  .btn-cta:active { transform: translateY(0) scale(.97); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative; min-height: 100svh; overflow: hidden; isolation: isolate;
+    display: grid; place-items: center;
+    background:
+      radial-gradient(120% 60% at 85% 0%, rgba(138,94,128,.85) 0%, rgba(138,94,128,0) 60%),
+      radial-gradient(90% 55% at 10% 18%, rgba(90,36,81,.9) 0%, rgba(90,36,81,0) 70%),
+      radial-gradient(140% 70% at 50% 55%, rgba(65,25,59,.95) 0%, rgba(65,25,59,0) 75%),
+      linear-gradient(to bottom, var(--aubergine-600) 0%, var(--aubergine) 38%, var(--plum-ink) 72%, #000 100%);
+  }
+  .grain {
+    position: absolute; inset: -50%; z-index: 1; pointer-events: none; opacity: .32; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  .hero-stage { position: relative; z-index: 2; width: 100%; display: grid; place-items: center; transform: translateY(6vh); }
+  .hero-word {
+    position: relative; z-index: 2; margin: 0;
+    font-family: var(--font-display); font-weight: 800; text-transform: uppercase;
+    font-size: min(25.5vw, 21rem); line-height: .8; letter-spacing: -0.03em;
+    color: var(--cream); text-align: center; white-space: nowrap;
+    text-shadow: 0 10px 40px rgba(42,16,36,.45);
+  }
+  /* Floating centerpiece: the monogram, half behind / half in front of the word */
+  .centerpiece {
+    position: absolute; z-index: 1; left: 50%; top: 50%;
+    width: min(78vw, 34rem); aspect-ratio: 1;
+    translate: -50% -60%;
+    animation: float 7s ease-in-out infinite;
+  }
+  .centerpiece .mark {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(55% 45% at 60% 20%, var(--cream) 0%, rgba(253,243,232,0) 75%),
+      linear-gradient(160deg, var(--cream) 0%, var(--mauve-tint) 35%, #B48FAA 65%, var(--mauve) 100%);
+    filter: drop-shadow(0 34px 44px rgba(42,16,36,.75)) drop-shadow(0 6px 10px rgba(0,0,0,.4));
+  }
+  .centerpiece.front { z-index: 3; clip-path: inset(62% 0 0 0); }
+    @keyframes float {
+    0%,100% { transform: translateY(0) rotate(-1.5deg); }
+    50%     { transform: translateY(-14px) rotate(1.5deg); }
+  }
+
+  .scroll-cue {
+    position: absolute; z-index: 3; left: 0; right: 0; bottom: var(--s-6);
+    display: flex; align-items: center; justify-content: center; gap: .9rem;
+    font-family: var(--font-semi); font-weight: 500; font-size: .8125rem;
+    letter-spacing: .14em; text-transform: uppercase; color: rgba(253,243,232,.55);
+    text-decoration: none;
+  }
+  .scroll-cue svg { width: 15px; height: 15px; }
+  .scroll-cue:hover { color: rgba(253,243,232,.85); }
+
+  /* ---------- Filters ---------- */
+  .wrap { width: 100%; max-width: 1360px; margin: 0 auto; padding: 0 var(--s-4); }
+  @media (min-width: 768px) { .wrap { padding: 0 var(--s-6); } }
+  .filters { padding-top: var(--s-7); padding-bottom: var(--s-6); position: relative; z-index: 10; }
+  .filter-row-top { display: flex; justify-content: space-between; gap: var(--s-2); margin-bottom: var(--s-2); }
+  .field {
+    display: flex; align-items: center; gap: .6rem;
+    height: 44px; padding: 0 .875rem;
+    background: rgba(253,243,232,.045);
+    border: 1px solid rgba(253,243,232,.14); border-radius: 2px;
+    color: var(--cream); font: 500 .9375rem/1 var(--font-body);
+    transition: background-color .2s var(--ease-out), border-color .2s var(--ease-out), transform .3s var(--spring);
+  }
+  .search { width: 40%; min-width: 9.5rem; max-width: 22rem; }
+  .search:focus-within { border-color: var(--mauve); background: rgba(138,94,128,.12); }
+  .search input { all: unset; width: 100%; font: inherit; color: var(--cream); }
+  .search input::placeholder { color: rgba(253,243,232,.78); }
+  .search svg { flex: none; width: 18px; height: 18px; color: rgba(253,243,232,.6); }
+  .btn-clear { justify-content: center; color: rgba(253,243,232,.45); background: rgba(253,243,232,.03); border-color: rgba(253,243,232,.08); cursor: pointer; width: 36%; min-width: 8rem; max-width: 12rem; }
+  .btn-clear:not(:disabled) { color: var(--cream); }
+  .btn-clear:not(:disabled):hover { background: rgba(253,243,232,.08); }
+  .btn-clear:active:not(:disabled) { transform: scale(.98); }
+  .btn-clear:disabled { cursor: default; }
+
+  .filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+  @media (min-width: 900px) {
+    .filters-inner { display: grid; grid-template-columns: 22rem 1fr 12rem; gap: var(--s-2); align-items: start; }
+    .filter-row-top { display: contents; }
+    .search { width: auto; max-width: none; grid-column: 1; grid-row: 1; }
+    .btn-clear { width: auto; max-width: none; grid-column: 3; grid-row: 1; }
+    .filter-grid { grid-column: 2; grid-row: 1; grid-template-columns: repeat(4, 1fr); }
+  }
+  .dd { position: relative; }
+  .dd-btn { width: 100%; justify-content: space-between; cursor: pointer; text-align: left; }
+  .dd-btn:hover { background: rgba(253,243,232,.08); border-color: rgba(253,243,232,.22); }
+  .dd-btn:active { transform: scale(.985); }
+  .dd-btn .plus { color: var(--mauve-tint); font-weight: 400; font-size: 1.15rem; transition: transform .35s var(--spring); }
+  .dd-btn[aria-expanded="true"] { border-color: var(--mauve); background: rgba(138,94,128,.14); }
+  .dd-btn[aria-expanded="true"] .plus { transform: rotate(45deg); }
+  .dd-btn .count {
+    font-size: .75rem; font-weight: 600; color: var(--plum-ink); background: var(--mauve-tint);
+    border-radius: 999px; padding: .15rem .45rem; margin-left: .4rem;
+  }
+  .dd-menu {
+    position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 20;
+    min-width: 12rem;
+    background: #160912; border: 1px solid rgba(231,215,226,.16); border-radius: 4px; padding: .35rem;
+    box-shadow: 0 24px 48px -12px rgba(42,16,36,.9), 0 8px 16px -8px rgba(0,0,0,.8), 0 0 0 1px rgba(0,0,0,.4);
+    opacity: 0; transform: translateY(-6px) scale(.98); transform-origin: top; pointer-events: none;
+    transition: opacity .2s var(--ease-out), transform .35s var(--spring);
+  }
+  .dd:nth-child(even) .dd-menu { left: auto; right: 0; }
+  .dd-menu.open { opacity: 1; transform: none; pointer-events: auto; }
+  .opt {
+    display: flex; align-items: center; justify-content: space-between; width: 100%;
+    padding: .6rem .75rem; border: 0; border-radius: 3px; background: transparent;
+    color: var(--cream); font: 500 1rem/1.2 var(--font-body); text-align: left; cursor: pointer;
+    transition: background-color .15s;
+  }
+  .opt:hover { background: rgba(138,94,128,.22); }
+  .opt:active { background: rgba(138,94,128,.35); }
+  .opt .tick { width: 16px; height: 16px; border: 1px solid rgba(231,215,226,.4); border-radius: 3px; display: grid; place-items: center; }
+  .opt[aria-checked="true"] .tick { background: var(--mauve-tint); border-color: var(--mauve-tint); }
+  .opt[aria-checked="true"] .tick::after { content: ""; width: 8px; height: 4px; border: solid var(--plum-ink); border-width: 0 0 2px 2px; transform: rotate(-45deg) translate(1px,-1px); }
+
+  /* ---------- Athlete cards ---------- */
+  .grid { display: grid; grid-template-columns: 1fr; gap: var(--s-3); padding-bottom: var(--s-7); }
+  @media (min-width: 768px)  { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1200px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  .card {
+    position: relative; display: block; overflow: hidden; isolation: isolate;
+    aspect-ratio: 578 / 487; border-radius: 6px; background: var(--plum-ink);
+    color: inherit; text-decoration: none;
+    box-shadow: 0 1px 0 rgba(231,215,226,.06) inset, 0 18px 30px -26px rgba(65,25,59,.45);
+    transition: transform .5s var(--spring);
+  }
+  .card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center bottom; z-index: -3; transition: transform .8s var(--ease-out); }
+  .card .tint  { position: absolute; inset: 0; z-index: -2; background: var(--aubergine); mix-blend-mode: multiply; opacity: .55; }
+  .card .shade { position: absolute; inset: 0; z-index: -1; }
+  .card:hover img { transform: scale(1.04); }
+  .card:active { transform: scale(.99); }
+  .card-body { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 var(--s-3) var(--s-3); }
+  @media (min-width: 768px) { .card-body { padding: 0 var(--s-5) var(--s-5); } }
+  .card h3 {
+    margin: 0; font-family: var(--font-display); font-weight: 800; text-transform: uppercase;
+    font-size: clamp(2.5rem, 12.5vw, 3.5rem); line-height: .92; letter-spacing: -0.03em; color: var(--cream);
+  }
+  @media (min-width: 768px) { .card h3 { font-size: clamp(2.5rem, 4.4vw, 3.25rem); } }
+  .card .sub  { margin: .35rem 0 0; font-size: 1.0625rem; line-height: 1.35; color: var(--mauve-tint); opacity: .85; }
+  .card .year { margin: .4rem 0 0; font-size: 1rem; line-height: 1.3; letter-spacing: .04em; color: var(--cream); }
+  .tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .6rem; }
+  .tag {
+    font: 500 .875rem/1 var(--font-body); color: var(--mauve-tint);
+    padding: .38rem .6rem; border: 1px solid var(--mauve); border-radius: 4px;
+    background: rgba(42,16,36,.55);
+  }
+  .empty { display: none; padding: var(--s-6) 0 var(--s-7); text-align: center; color: rgba(253,243,232,.7); }
+  .empty button { all: unset; cursor: pointer; color: var(--cream); text-decoration: underline; text-underline-offset: 3px; border-radius: 2px; }
+  .empty button:hover { color: var(--mauve-tint); }
+  .empty button:active { opacity: .7; }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid rgba(231,215,226,.1); padding: var(--s-7) 0 var(--s-6); color: rgba(253,243,232,.68); font-size: .9375rem; }
+  footer .logo { width: 150px; height: 52px; margin-bottom: var(--s-3); }
+  footer h4 { margin: 0 0 .6rem; font: 600 .9375rem/1.3 var(--font-semi); color: var(--cream); letter-spacing: .02em; }
+  footer ul { list-style: none; margin: 0; padding: 0; }
+  footer a { color: inherit; text-decoration: none; border-radius: 2px; transition: color .2s; }
+  footer a:hover { color: var(--cream); }
+  footer a:active { opacity: .7; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <a href="#" class="logo-link" aria-label="Academo Sports – Startseite"><span class="logo"></span></a>
+  <nav class="flex items-center gap-4 md:gap-6">
+    <a href="login.html" class="nav-link">Login</a>
+    <a href="#check" class="btn-cta">Kostenlos prüfen</a>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" aria-label="Academo Sports Athleten">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="hero-stage">
+      <div class="centerpiece" aria-hidden="true"><span class="mark"></span></div>
+      <h1 class="hero-word">Athleten</h1>
+      <div class="centerpiece front" aria-hidden="true"><span class="mark"></span></div>
+    </div>
+    <a href="#athleten" class="scroll-cue">
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 15 1 8h4V1h6v7h4z"/></svg>
+      Scroll for more
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 15 1 8h4V1h6v7h4z"/></svg>
+    </a>
+  </section>
+
+  <!-- FILTERS -->
+  <section class="filters wrap" id="athleten" aria-label="Athleten filtern">
+    <div class="filters-inner">
+      <div class="filter-row-top">
+        <label class="field search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span class="sr-only">Athleten durchsuchen</span>
+          <input id="q" type="search" placeholder="Suchen…" autocomplete="off">
+        </label>
+        <button class="field btn-clear" id="clear" type="button" disabled>Zurücksetzen</button>
+      </div>
+      <div class="filter-grid" id="dropdowns"></div>
+    </div>
+  </section>
+
+  <!-- ATHLETES -->
+  <section class="wrap" aria-label="Athleten">
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty">Keine Athleten für diese Auswahl. <button type="button" id="clear2">Filter zurücksetzen</button></p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-10" style="display:grid">
+    <div style="max-width:28rem">
+      <span class="logo" aria-hidden="true"></span>
+      <p class="m-0">Academo Sports begleitet Athleten aus Deutschland, Österreich und der Schweiz auf dem Weg zu einem Sportstipendium an US-Colleges. Wir kooperieren mit Vereinen und Akademien in Europa und den USA.</p>
+    </div>
+    <div>
+      <h4>Für Athleten</h4>
+      <ul class="space-y-1">
+        <li><a href="#check" id="check">Chanceneinschätzung</a></li>
+        <li><a href="#">Fußball Stipendium</a></li>
+        <li><a href="#">Tennis Stipendium</a></li>
+        <li><a href="#">Golf Stipendium</a></li>
+        <li><a href="#">Eltern-Info</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Für Vereine</h4>
+      <ul class="space-y-1"><li><a href="#">Partnerschaft anfragen</a></li></ul>
+    </div>
+    <div>
+      <h4>Unternehmen</h4>
+      <ul class="space-y-1">
+        <li><a href="#">Über uns</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Impressum</a></li>
+        <li><a href="#">Datenschutz</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:var(--s-6)"><p class="m-0 text-sm" style="color:rgba(253,243,232,.45)">© 2026 Academo Sports. Alle Rechte vorbehalten.</p></div>
+</footer>
+
+<script>
+  // Placeholder roster — replace with real placements (name, position, college/division, year, photo).
+  const ATHLETES = [
+    { name: "Lena M.",    sub: "Innenverteidigerin",  year: 2026, sport: "Fußball",  div: "NCAA D-I",  pos: "Abwehr" },
+    { name: "Jonas K.",   sub: "Zentrales Mittelfeld", year: 2026, sport: "Fußball",  div: "NCAA D-II", pos: "Mittelfeld" },
+    { name: "Sophie R.",  sub: "Einzel & Doppel",     year: 2025, sport: "Tennis",   div: "NCAA D-I",  pos: "Einzel" },
+    { name: "Felix B.",   sub: "Handicap +1,2",       year: 2026, sport: "Golf",     div: "NCAA D-I",  pos: "Einzel" },
+    { name: "Mia H.",     sub: "Torhüterin",          year: 2025, sport: "Fußball",  div: "NAIA",      pos: "Tor" },
+    { name: "Luca W.",    sub: "Stürmer",             year: 2027, sport: "Fußball",  div: "NCAA D-I",  pos: "Angriff" },
+    { name: "Anna S.",    sub: "Einzel",              year: 2026, sport: "Tennis",   div: "NCAA D-II", pos: "Einzel" },
+    { name: "Elias F.",   sub: "Außenverteidiger",    year: 2025, sport: "Fußball",  div: "NCAA D-II", pos: "Abwehr" },
+    { name: "Clara P.",   sub: "Handicap 0,8",        year: 2027, sport: "Golf",     div: "NAIA",      pos: "Einzel" },
+    { name: "Noah T.",    sub: "800 m",               year: 2026, sport: "Leichtathletik", div: "NCAA D-I", pos: "Einzel" },
+    { name: "Emma L.",    sub: "Offensives Mittelfeld", year: 2027, sport: "Fußball", div: "NCAA D-I", pos: "Mittelfeld" },
+    { name: "Paul G.",    sub: "Doppel",              year: 2025, sport: "Tennis",   div: "NAIA",      pos: "Doppel" },
+  ];
+
+  const FILTERS = [
+    { key: "sport", label: "Sportart" },
+    { key: "div",   label: "Division" },
+    { key: "pos",   label: "Position" },
+    { key: "year",  label: "Jahrgang" },
+  ];
+  const state = { q: "", sport: new Set(), div: new Set(), pos: new Set(), year: new Set() };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+
+  // Cards
+  const grid = document.getElementById("grid");
+  grid.innerHTML = ATHLETES.map((a, i) => `
+    <a href="#" class="card" data-i="${i}" aria-label="${esc(a.name)}, ${esc(a.sub)}, ${a.year}">
+      <img src="https://placehold.co/1156x1700/2A1024/5A2451/png?text=Athletenfoto&font=raleway" alt="" loading="lazy">
+      <span class="tint" aria-hidden="true"></span>
+      <span class="shade bg-gradient-to-t from-black/60 via-black/25 to-transparent" aria-hidden="true"></span>
+      <div class="card-body">
+        <h3>${esc(a.name)}</h3>
+        <p class="sub">${esc(a.sub)}</p>
+        <p class="year">${a.year}</p>
+        <div class="tags"><span class="tag">${esc(a.sport)}</span><span class="tag">${esc(a.div)}</span></div>
+      </div>
+    </a>`).join("");
+  const cards = [...grid.children];
+
+  // Dropdowns
+  const dd = document.getElementById("dropdowns");
+  dd.innerHTML = FILTERS.map(f => {
+    const opts = [...new Set(ATHLETES.map(a => a[f.key]))].sort();
+    return `<div class="dd" data-key="${f.key}">
+      <button type="button" class="field dd-btn" aria-expanded="false" aria-controls="m-${f.key}">
+        <span>${f.label}<span class="count" hidden></span></span><span class="plus" aria-hidden="true">+</span>
+      </button>
+      <div class="dd-menu" id="m-${f.key}" role="menu">
+        ${opts.map(o => `<button type="button" class="opt" role="menuitemcheckbox" aria-checked="false" data-v="${esc(o)}">${esc(o)}<span class="tick" aria-hidden="true"></span></button>`).join("")}
+      </div></div>`;
+  }).join("");
+
+  const closeAll = except => dd.querySelectorAll(".dd").forEach(d => {
+    if (d === except) return;
+    d.querySelector(".dd-btn").setAttribute("aria-expanded", "false");
+    d.querySelector(".dd-menu").classList.remove("open");
+  });
+  dd.addEventListener("click", e => {
+    const d = e.target.closest(".dd"); if (!d) return;
+    const key = d.dataset.key;
+    if (e.target.closest(".dd-btn")) {
+      const btn = d.querySelector(".dd-btn"), open = btn.getAttribute("aria-expanded") === "true";
+      closeAll(d); btn.setAttribute("aria-expanded", String(!open));
+      d.querySelector(".dd-menu").classList.toggle("open", !open);
+    }
+    const opt = e.target.closest(".opt");
+    if (opt) {
+      const v = opt.dataset.v, on = opt.getAttribute("aria-checked") !== "true";
+      opt.setAttribute("aria-checked", String(on));
+      on ? state[key].add(v) : state[key].delete(v);
+      apply();
+    }
+  });
+  document.addEventListener("click", e => { if (!e.target.closest(".dd")) closeAll(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
+
+  document.getElementById("q").addEventListener("input", e => { state.q = e.target.value.trim().toLowerCase(); apply(); });
+
+  function reset() {
+    state.q = ""; document.getElementById("q").value = "";
+    FILTERS.forEach(f => state[f.key].clear());
+    dd.querySelectorAll(".opt").forEach(o => o.setAttribute("aria-checked", "false"));
+    closeAll(); apply();
+  }
+  document.getElementById("clear").addEventListener("click", reset);
+  document.getElementById("clear2").addEventListener("click", reset);
+
+  function apply() {
+    let shown = 0;
+    cards.forEach(c => {
+      const a = ATHLETES[c.dataset.i];
+      const text = `${a.name} ${a.sub} ${a.sport} ${a.div} ${a.pos} ${a.year}`.toLowerCase();
+      const ok = (!state.q || text.includes(state.q)) &&
+        FILTERS.every(f => !state[f.key].size || state[f.key].has(String(a[f.key])));
+      c.hidden = !ok; if (ok) shown++;
+    });
+    const active = state.q || FILTERS.some(f => state[f.key].size);
+    document.getElementById("clear").disabled = !active;
+    document.getElementById("empty").style.display = shown ? "none" : "block";
+    FILTERS.forEach(f => {
+      const n = state[f.key].size, el = dd.querySelector(`[data-key="${f.key}"] .count`);
+      el.hidden = !n; el.textContent = n;
+    });
+  }
+
+  // Top bar backdrop on scroll
+  const tb = document.getElementById("topbar");
+  addEventListener("scroll", () => tb.classList.toggle("scrolled", scrollY > 40), { passive: true });
+</script>
+</body>
+</html>
